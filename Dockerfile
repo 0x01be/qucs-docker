@@ -3,6 +3,9 @@ FROM alpine
 RUN apk add --no-cache --virtual qucs-build-dependencies \
     git \
     build-base \
+    ccache \
+    autoconf \
+    automake \
     cmake \
     bison \
     flex \
@@ -19,7 +22,10 @@ RUN apk add --no-cache --virtual qucs-build-dependencies \
     doxygen \
     graphviz \
     texlive-full \
-    gnuplot
+    gnuplot \
+    libxml2-dev \
+    perl-xml-libxml \
+    perl-gd
 
 RUN apk add --no-cache --virtual qucs-edge-runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
@@ -29,15 +35,11 @@ RUN apk add --no-cache --virtual qucs-edge-runtime-dependencies \
 
 RUN git clone --depth 1 https://github.com/Qucs/ADMS.git /adms
 
-RUN apk add libxml2-dev ccache autoconf automake perl-xml-libxml perl-gd
-
 WORKDIR /adms
 
 RUN ./bootstrap.sh
 RUN ./configure --prefix=/opt/adms
 RUN make install
-
-RUN ls /opt/adms
 
 ENV LD_LIBRARY_PATH /usr/lib/:/opt/adms/lib/
 ENV PATH $PATH:/opt/adms/bin/
@@ -52,3 +54,4 @@ RUN ln -s /qucs/qucsator /qucs/qucs-core
 RUN ./bootstrap
 RUN ./configure --prefix=/opt/qucs
 RUN make install
+
