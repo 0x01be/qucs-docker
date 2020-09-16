@@ -52,6 +52,6 @@ WORKDIR /qucs
 ENV QT qt5
 RUN ln -s /qucs/qucsator /qucs/qucs-core
 RUN ./bootstrap
-RUN ./configure --prefix=/opt/qucs
+RUN ./configure --prefix=/opt/qucs --disable-doc
 RUN make install
 
