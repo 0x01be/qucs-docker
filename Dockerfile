@@ -55,5 +55,5 @@ RUN ./bootstrap
 
 WORKDIR /qucs/qucs
 RUN ./configure --prefix=/opt/qucsa --with-qt-name=Qt5 --disable-doc
-RUN make install
+RUN make
 
