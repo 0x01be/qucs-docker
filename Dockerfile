@@ -49,9 +49,9 @@ ENV REVISION refactor+qt5-18
 RUN git clone --recursive --branch $REVISION https://github.com/Qucs/qucs.git /qucs
 
 WORKDIR /qucs
-ENV QT qt5
 RUN ln -s /qucs/qucsator /qucs/qucs-core
-RUN cd qucs/translations && make qucs_.ts
+ENV QT qt5
+RUN ./bootstrap
 
 WORKDIR /qucs/qucs
 RUN ./configure --prefix=/opt/qucsa --with-qt-name=Qt5 --disable-doc
