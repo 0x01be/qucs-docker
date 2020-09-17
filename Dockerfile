@@ -54,6 +54,6 @@ ENV QT qt5
 RUN ./bootstrap
 
 WORKDIR /qucs/qucs
-RUN ./configure --prefix=/opt/qucsa --with-qt-name=Qt5 --disable-doc --enable-debug
+RUN ./configure --prefix=/opt/qucsa --with-qt-name=Qt5 --enable-debug
 RUN make
 
