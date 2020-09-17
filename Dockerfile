@@ -52,6 +52,14 @@ WORKDIR /qucs
 ENV QT qt5
 RUN ln -s /qucs/qucsator /qucs/qucs-core
 RUN ./bootstrap
-RUN ./configure --prefix=/opt/qucs --disable-doc
+RUN ./configure --prefix=/opt/qucs
+
+ADD https://gitlab.com/rilian-la-te/musl-locales/-/archive/master/musl-locales-master.zip /musl-locales.zip
+RUN apk add unzip
+RUN unzip /musl-locales.zip
+RUN cd musl-locales-master && cmake -DLOCALE_PROFILE=OFF -D CMAKE_INSTALL_PREFIX:PATH=/usr . && make && make install
+
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 RUN make install
 
