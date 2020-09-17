@@ -51,10 +51,9 @@ RUN git clone --recursive --branch $REVISION https://github.com/Qucs/qucs.git /q
 WORKDIR /qucs
 ENV QT qt5
 RUN ln -s /qucs/qucsator /qucs/qucs-core
-RUN ./bootstrap
-RUN ./configure --prefix=/opt/qucs
 RUN cd qucs/translations && make qucs_.ts
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US.UTF-8
+
+WORKDIR /qucs/qucs
+RUN ./configure --prefix=/opt/qucsa --with-qt-name=Qt5 --disable-doc
 RUN make install
 
