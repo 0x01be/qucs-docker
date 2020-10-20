@@ -4,10 +4,12 @@ FROM 0x01be/xpra
 
 USER root
 RUN apk add --no-cache --virtual qucs-runtime-dependencies \
-    qt5-qtbase \
-    qt5-qttools \
-    qt5-qtsvg \
-    qt5-qtscript
+    make \
+    g++ \
+    qt5-qtbase-dev \
+    qt5-qttools-dev \
+    qt5-qtsvg-dev \
+    qt5-qtscript-dev
 
 RUN apk add --no-cache --virtual qucs-edge-runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
@@ -15,11 +17,20 @@ RUN apk add --no-cache --virtual qucs-edge-runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     octave
 
-COPY --from=build /opt/qucs/ /opt/qucs/
+COPY --from=build /opt/adms/ /opt/adms/
+COPY --from=build /qucs/qucs/main/qucs /opt/qucs/bin/
+COPY --from=build /qucs/qucs/main/qucs.real /opt/qucs/bin/
+COPY --from=build /qucs/ /qucs/
 
-ENV PATH $PATH:/opt/qucs/bin/
+RUN mkdir -p /opt/qucs/bin/.libs/
+RUN chown -R xpra:xpra /opt/qucs/
+RUN chown -R xpra:xpra /qucs/
+RUN mkdir -p /tmp/.X11-unix
+RUN chown -R xpra:xpra /tmp/.X11-unix
 
 USER xpra
+
+ENV PATH $PATH:/opt/qucs/bin/:/opt/adms/bin/
 
 ENV COMMAND qucs
 
